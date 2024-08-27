@@ -1,0 +1,23 @@
+pipeline{
+  agent any
+  stages{
+    stage('build'){
+          steps{
+            script{
+              echo "build in progress"
+               sh 'echo "This is build from Jenkins"'
+               sh 'mvn clean package'
+            }
+          }
+        }
+        stage('build'){
+              steps{
+                script{
+                  echo "build in progress"
+                   sh 'echo "This is test from Jenkins"'
+                   sh 'mvn test package'
+                }
+              }
+            }
+  }
+}
