@@ -22,33 +22,68 @@
 // }
 
 
-pipeline {
- agent {
-   label 'aws-angent'
- }
-  stages {
-    stage('Build') {
-      steps {
-        script {
-          try {
-            sh 'echo "This is build from Jenkins"'
-          } catch (Exception e) {
-            sh 'echo "Exception occurred"'
-            error("Build failed: ${e.message}")
-          }
+// pipeline {
+//  agent {
+//    label 'aws-angent'
+//  }
+//   stages {
+//     stage('Build') {
+//       steps {
+//         script {
+//           try {
+//             sh 'echo "This is build from Jenkins"'
+//           } catch (Exception e) {
+//             sh 'echo "Exception occurred"'
+//             error("Build failed: ${e.message}")
+//           }
+//         }
+//       }
+//     }
+//     stage('Test') {
+//       steps {
+//         script {
+//           if (env.BRANCH_NAME == "deploy") {
+//             sh 'echo "This is deploy"'
+//           } else {
+//             sh 'echo "This is main branch"'
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+
+
+pipeline{
+    agent any
+    stages{
+        stage('build'){
+            steps{
+                script{
+                    sh 'docker build -t react-app .'
+                }
+            }
         }
-      }
-    }
-    stage('Test') {
-      steps {
-        script {
-          if (env.BRANCH_NAME == "deploy") {
-            sh 'echo "This is deploy"'
-          } else {
-            sh 'echo "This is main branch"'
-          }
+        stage('push'){
+            steps{
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'Password', usernameVariable: 'Username')]) {
+                    sh 'docker login --username $Username --password $Password'
+                    sh 'docker tag react-app $Username/react-app'
+                    sh 'docker push $Username/react-app'
+                    }
+                }
+            }
         }
-      }
+        stage('deploy'){
+            steps{
+                script{
+                    withAWS(credentials: 'aws-cli', region: 'eu-central-1') {
+                    sh 'aws eks update-kubeconfig --region eu-central-1 --name eks'
+                    sh 'kubectl apply -f ./k8s/deployment.yaml'
+                    }
+                }
+            }
+        }
     }
-  }
 }
