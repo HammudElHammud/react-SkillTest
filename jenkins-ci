@@ -10,7 +10,7 @@ pipeline{
             }
           }
         }
-        stage('build'){
+        stage('test'){
               steps{
                 script{
                   echo "build in progress"
