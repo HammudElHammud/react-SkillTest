@@ -4,6 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+## Added jenkins to this repo
+
 In the project directory, you can run:
 
 ### `npm start`
