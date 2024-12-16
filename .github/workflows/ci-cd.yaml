@@ -40,7 +40,7 @@ jobs:
            node-version: 16.x
 
        - name: audit
-         run: cd frontend && npm audit --omit=dev
+         run: npm audit --omit=dev
 
    lint:
      name: 🧼 Ensure Code Style
@@ -55,7 +55,7 @@ jobs:
            node-version: 16.x
 
        - name: Install deps
-         run: cd frontend && npm i
+         run: npm i
 
        - name: 😂 Lint code
          run:  npm run lint
