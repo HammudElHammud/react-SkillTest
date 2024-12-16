@@ -26,3 +26,37 @@ jobs:
          with:
             path: build
 
+   security-audit:
+     name: Audit Deps
+     needs: build
+     runs-on: ubuntu-latest
+     steps:
+       - name: checkout code
+         uses: actions/checkout@v3
+
+       - name: ensure node installed and right version
+         uses: actions/setup-node@v3
+         with:
+           node-version: 16.x
+
+       - name: audit
+         run: cd frontend && npm audit --omit=dev
+
+   lint:
+     name: 🧼 Ensure Code Style
+     runs-on: ubuntu-latest
+     needs: build
+     steps:
+       - uses: actions/checkout@v3
+
+       - name: Setup Node 16
+         uses: actions/setup-node@v3
+         with:
+           node-version: 16.x
+
+       - name: Install deps
+         run: cd frontend && npm i
+
+       - name: 😂 Lint code
+         run:  npm run lint
+
