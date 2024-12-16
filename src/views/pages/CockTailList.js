@@ -3,7 +3,6 @@ import {useTranslation} from "react-i18next";
 import "../../css/card.css"
 import AOS from "aos";
 import {createAxios} from "../../utils/Helpars/AxiosHelpers";
-import {useSelector} from "react-redux";
 import * as Swal from "../../utils/Helpars/SwalHelper";
 
 
@@ -11,8 +10,6 @@ const api = createAxios();
 AOS.init();
 
 const CockTailList = () => {
-    const user = useSelector(state => state.User);
-
     const [cocktails, setCocktails] = useState([]);
 
     useEffect(() => {
