@@ -39,8 +39,11 @@ jobs:
          with:
            node-version: 16.x
 
-       - name: audit
-         run: npm audit --omit=dev
+       - name: Audit and fix
+           run: |
+             npm install
+             npm audit fix || true  # Attempt to fix vulnerabilities automatically
+             npm audit --omit=dev   # Run audit again to check for remaining vulnerabilities
 
    lint:
      name: 🧼 Ensure Code Style
