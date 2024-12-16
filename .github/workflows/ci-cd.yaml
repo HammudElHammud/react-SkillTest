@@ -13,9 +13,11 @@ jobs:
        - name: Install dependencies
          run: npm i
 
-       - name: build react
+       - name: Build react
+         env:
+           CI: false
          run: npm run build
 
-       - name: upload-file
+       - name: Upload-file
          uses: actions/upload-pages-artifact@v1
 
